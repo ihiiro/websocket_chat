@@ -1,4 +1,4 @@
-const wss = new WebSocket(`wss://${processs.env.HOST}:${process.env.PORT}`);
+const wss = new WebSocket(`wss://websocket-chat-aiov.onrender.com`);
 
 wss.addEventListener('open', () => {
   document.getElementById('send').addEventListener('click', () => {
