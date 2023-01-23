@@ -40,4 +40,4 @@ ws_server.on('connection', ws => {
 ws_server.on('error', error => {
   Render.log(error);
 });
-Render.log(`WS server is listening on host ${process.env.HOST} and port ${process.env.PORT})`
+Render.log(`WS server is listening on host ${process.env.HOST} and port ${process.env.PORT}`);
