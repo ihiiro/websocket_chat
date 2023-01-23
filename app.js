@@ -1,6 +1,7 @@
 const { Server } = require('ws');
 const { createServer } = require('http');
 const { resolve } = require('path');
+const Render = require('render-js');
 
 // dynamic constants
 const html_file = Render.file(resolve(__dirname, './static/index.html')).toString();
