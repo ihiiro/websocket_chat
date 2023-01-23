@@ -1,17 +1,11 @@
 const { Server } = require('ws');
 const { createServer } = require('http');
-const { readFileSync } = require('fs');
 const { resolve } = require('path');
 
-// literal constants
-const HTTP_PORT = 8080;
-const WS_PORT = 8000;
-const SHARED_HOST = '0.0.0.0';
-
 // dynamic constants
-const html_file = readFileSync(resolve(__dirname, './static/index.html'), 'utf8');
-const css_file = readFileSync(resolve(__dirname, './static/styles.css'), 'utf8');
-const js_file = readFileSync(resolve(__dirname, './static/script.js'), 'utf8');
+const html_file = Render.file(resolve(__dirname, './static/index.html')).toString();
+const css_file = Render.file(resolve(__dirname, './static/styles.css')).toString();
+const js_file = Render.file(resolve(__dirname, './static/script.js')).toString();
 
 // http server
 const http_server = createServer((req, res) => {
@@ -30,21 +24,20 @@ const http_server = createServer((req, res) => {
   }
 });
 
-http_server.listen(HTTP_PORT, SHARED_HOST, () => {
-  console.log(`HTTP server is listening on host ${SHARED_HOST} and port ${HTTP_PORT}`);
+http_server.listen(process.env.PORT, process.env.HOST, () => {
+  Render.log(`HTTP server is listening on host ${process.env.HOST} and port ${process.env.PORT}`);
 });
 
 // websocket server
 const ws_server = new Server({ server: http_server });
 
 ws_server.on('connection', ws => {
-  console.log('new client connected');
+  Render.log('new client connected');
   ws.on('message', message => {
-    // ws.send(JSON.stringify(JSON.parse(message)));
     ws_server.clients.forEach(client => client.send(JSON.stringify(JSON.parse(message))));
   });
 });
 ws_server.on('error', error => {
-  console.log(error);
+  Render.log(error);
 });
-console.log(`WS server is listening on host ${SHARED_HOST} and port ${WS_PORT}`);
+Render.log(`WS server is listening on host ${process.env.HOST} and port ${process.env.PORT}`
