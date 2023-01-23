@@ -1,5 +1,5 @@
 const { Server } = require('ws');
-const { createServer } = require('https');
+const { createServer } = require('http');
 const { resolve } = require('path');
 const { readFileSync } = require('fs');
 
@@ -9,7 +9,7 @@ const css_file = readFileSync(resolve(__dirname, './static/styles.css'), 'utf8')
 const js_file = readFileSync(resolve(__dirname, './static/script.js'), 'utf8');
 
 // https server
-const https_server = createServer((req, res) => {
+const http_server = createServer((req, res) => {
   if (req.method === 'GET' && req.url === '/') {
     res.writeHead(200, {'Content-Type': 'text/html'});
     res.end(html_file);
@@ -25,20 +25,20 @@ const https_server = createServer((req, res) => {
   }
 });
 
-https_server.listen(process.env.PORT, process.env.HOST, () => {
+http_server.listen(process.env.PORT, process.env.HOST, () => {
   console.log(`HTTPS server is listening on host ${process.env.HOST} and port ${process.env.PORT}`);
 });
 
 // websocket server
-const wss_server = new Server({ server: https_server });
+const ws_server = new Server({ server: http_server });
 
-wss_server.on('connection', ws => {
+ws_server.on('connection', ws => {
   console.log('new client connected');
   ws.on('message', message => {
-    wss_server.clients.forEach(client => client.send(JSON.stringify(JSON.parse(message))));
+    ws_server.clients.forEach(client => client.send(JSON.stringify(JSON.parse(message))));
   });
 });
-wss_server.on('error', error => {
+ws_server.on('error', error => {
   console.log(error);
 });
 console.log(`WSS server is listening on host ${process.env.HOST} and port ${process.env.PORT}`);
