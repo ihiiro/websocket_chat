@@ -1,12 +1,12 @@
 const { Server } = require('ws');
 const { createServer } = require('http');
 const { resolve } = require('path');
-const Render = require('render-js');
+const { readFileSync } = require('fs');
 
 // dynamic constants
-const html_file = Render.file(resolve(__dirname, './static/index.html')).toString();
-const css_file = Render.file(resolve(__dirname, './static/styles.css')).toString();
-const js_file = Render.file(resolve(__dirname, './static/script.js')).toString();
+const html_file = readFileSync(resolve(__dirname, './static/index.html'), 'utf8');
+const css_file = readFileSync(resolve(__dirname, './static/styles.css'), 'utf8');
+const js_file = readFileSync(resolve(__dirname, './static/script.js'), 'utf8');
 
 // http server
 const http_server = createServer((req, res) => {
@@ -26,19 +26,19 @@ const http_server = createServer((req, res) => {
 });
 
 http_server.listen(process.env.PORT, process.env.HOST, () => {
-  Render.log(`HTTP server is listening on host ${process.env.HOST} and port ${process.env.PORT}`);
+  console.log(`HTTP server is listening on host ${process.env.HOST} and port ${process.env.PORT}`);
 });
 
 // websocket server
 const ws_server = new Server({ server: http_server });
 
 ws_server.on('connection', ws => {
-  Render.log('new client connected');
+  console.log('new client connected');
   ws.on('message', message => {
     ws_server.clients.forEach(client => client.send(JSON.stringify(JSON.parse(message))));
   });
 });
 ws_server.on('error', error => {
-  Render.log(error);
+  console.log(error);
 });
-Render.log(`WS server is listening on host ${process.env.HOST} and port ${process.env.PORT}`);
+console.log(`WS server is listening on host ${process.env.HOST} and port ${process.env.PORT}`);
