@@ -1,5 +1,5 @@
 const { Server } = require('ws');
-const { createServer } = require('http');
+const { createServer } = require('https');
 const { resolve } = require('path');
 const { readFileSync } = require('fs');
 
@@ -9,7 +9,7 @@ const css_file = readFileSync(resolve(__dirname, './static/styles.css'), 'utf8')
 const js_file = readFileSync(resolve(__dirname, './static/script.js'), 'utf8');
 
 // http server
-const http_server = createServer((req, res) => {
+const https_server = createServer((req, res) => {
   if (req.method === 'GET' && req.url === '/') {
     res.writeHead(200, {'Content-Type': 'text/html'});
     res.end(html_file);
@@ -25,12 +25,12 @@ const http_server = createServer((req, res) => {
   }
 });
 
-http_server.listen(process.env.PORT, process.env.HOST, () => {
+http_servers.listen(process.env.PORT, process.env.HOST, () => {
   console.log(`HTTP server is listening on host ${process.env.HOST} and port ${process.env.PORT}`);
 });
 
 // websocket server
-const ws_server = new Server({ server: http_server });
+const ws_server = new Server({ server: https_server });
 
 ws_server.on('connection', ws => {
   console.log('new client connected');
