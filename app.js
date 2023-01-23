@@ -25,8 +25,8 @@ const http_server = createServer((req, res) => {
   }
 });
 
-http_server.listen(process.env.PORT, process.env.HOST, () => {
-  console.log(`HTTPS server is listening on host ${process.env.HOST} and port ${process.env.PORT}`);
+http_server.listen(process.env.PORT, () => {
+  console.log('HTTP server is listening on websocket-chat-aiov.onrender.com');
 });
 
 // websocket server
@@ -41,4 +41,4 @@ ws_server.on('connection', ws => {
 ws_server.on('error', error => {
   console.log(error);
 });
-console.log(`WSS server is listening on host ${process.env.HOST} and port ${process.env.PORT}`);
+console.log(`WSS server is listening on port ${process.env.PORT}`);
