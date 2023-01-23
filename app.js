@@ -1,7 +1,7 @@
 const { Server } = require('ws');
-const { createServer } = require('node:http');
-const { readFileSync } = require('node:fs');
-const { resolve } = require('node:path');
+const { createServer } = require('http');
+const { readFileSync } = require('fs');
+const { resolve } = require('path');
 
 // literal constants
 const HTTP_PORT = 8080;
