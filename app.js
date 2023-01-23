@@ -8,7 +8,7 @@ const html_file = readFileSync(resolve(__dirname, './static/index.html'), 'utf8'
 const css_file = readFileSync(resolve(__dirname, './static/styles.css'), 'utf8');
 const js_file = readFileSync(resolve(__dirname, './static/script.js'), 'utf8');
 
-// http server
+// https server
 const https_server = createServer((req, res) => {
   if (req.method === 'GET' && req.url === '/') {
     res.writeHead(200, {'Content-Type': 'text/html'});
@@ -25,7 +25,7 @@ const https_server = createServer((req, res) => {
   }
 });
 
-https_servers.listen(process.env.PORT, process.env.HOST, () => {
+https_server.listen(process.env.PORT, process.env.HOST, () => {
   console.log(`HTTPS server is listening on host ${process.env.HOST} and port ${process.env.PORT}`);
 });
 
