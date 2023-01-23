@@ -25,20 +25,20 @@ const https_server = createServer((req, res) => {
   }
 });
 
-http_servers.listen(process.env.PORT, process.env.HOST, () => {
-  console.log(`HTTP server is listening on host ${process.env.HOST} and port ${process.env.PORT}`);
+https_servers.listen(process.env.PORT, process.env.HOST, () => {
+  console.log(`HTTPS server is listening on host ${process.env.HOST} and port ${process.env.PORT}`);
 });
 
 // websocket server
-const ws_server = new Server({ server: https_server });
+const wss_server = new Server({ server: https_server });
 
-ws_server.on('connection', ws => {
+wss_server.on('connection', ws => {
   console.log('new client connected');
   ws.on('message', message => {
-    ws_server.clients.forEach(client => client.send(JSON.stringify(JSON.parse(message))));
+    wss_server.clients.forEach(client => client.send(JSON.stringify(JSON.parse(message))));
   });
 });
-ws_server.on('error', error => {
+wss_server.on('error', error => {
   console.log(error);
 });
-console.log(`WS server is listening on host ${process.env.HOST} and port ${process.env.PORT}`);
+console.log(`WSS server is listening on host ${process.env.HOST} and port ${process.env.PORT}`);
